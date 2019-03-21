@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <title>insert a title</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <script>
+//    计算到期时间  
+      var hiredate=new Date("2012/6/30");
+      var enddate=new Date(hiredate.getTime());
+      enddate.setFullYear(enddate.getFullYear()+3);
+      console.log(enddate.toLocaleDateString());//只获得日期部分
+
+//    计算续签时间：renewal
+//    复制enddate到renewal
+      var renewal=new Date(enddate.getTime());
+//    将renewal的月份-1
+      renewal.setMonth(renewal.getMonth()-1);
+//    如果当前日期是星期6
+      if(renewal.getDay()==6){
+//      则renewal-1天    
+        renewal.setDate(renewal.getDate()-1);
+      }else if(renewal.getDay()==0){
+//    否则如果当前日期是星期日
+//      则renewal-2
+        renewal.setDate(renewal.getDate()-2);
+      }
+      console.log(renewal.toLocaleDateString());
+
+//    计算提醒时间：remind
+//    复制renewal到remind
+      var remind=new Date(renewal.getTime());
+//    将remind减7  
+      remind.setDate(remind.getDate()-7);
+      console.log(remind.toLocaleDateString());
+
+      function getDueDate(days){
+//      1.获得当前时间now
+        var now=new Date();
+//      循环：反复为当前时间+1天，到i<days结束
+        for(i=0;i<days;i++){
+//      如果当前时间是周五
+          if(now.getDay()==5){
+//        就先加2天
+            now.setDate(now.getDate()+2);
+          }else if(now.getDay()==6){
+//      否则，如果当前时间是周六
+//        就先加1天
+            now.setDate(now.getDate()+1);
+          }
+//      默认都要加1天  
+          now.setDate(now.getDate()+1);
+        }
+        return now;
+      }
+    </script>
+    <button onclick="alert(getDueDate(prompt('输入天数')).toLocaleDateString())">n个工作日后的日期</button>
+  </body>
+</html>
